@@ -1,6 +1,5 @@
 trigger:
-- master
-- features/*
+- releases/3.1.x
 
 jobs:
 - job: Linux
@@ -17,6 +16,7 @@ jobs:
     inputs:
       targetType: filePath
       filePath: ./build.sh
+      arguments: --azure-pipelines
 
 - job: Windows
   pool:
@@ -32,11 +32,12 @@ jobs:
     inputs:
       targetType: filePath
       filePath: ./build.ps1  
+      arguments: --azure-pipelines
   - task: NuGetCommand@2
-    displayName: 'Push to GitHub packages'
+    displayName: 'Push packages'
     inputs:
       command: push
       packagesToPush: 'nuget/*.nupkg'
-      nuGetFeedType: external
-      publishFeedCredentials: 'GitHub Packages'
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+      nuGetFeedType: 'internal'
+      publishVstsFeed: '$(FEEDID)'
+    condition: and(succeeded(), contains(variables['Build.SourceBranch'], 'refs/tags/'))

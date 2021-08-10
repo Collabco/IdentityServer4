@@ -175,7 +175,7 @@ namespace IdentityServer4.Services
 
             if (!properties.Items.ContainsKey(SessionIdKey) || currentSubjectId != newSubjectId)
             {
-                properties.Items[SessionIdKey] = CryptoRandom.CreateUniqueId(16);
+                properties.Items[SessionIdKey] = CryptoRandom.CreateUniqueId(16, CryptoRandom.OutputFormat.Hex);
             }
 
             IssueSessionIdCookie(properties.Items[SessionIdKey]);

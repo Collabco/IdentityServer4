@@ -133,7 +133,7 @@ namespace Host
             var cert = new X509Certificate2("./keys/identityserver.test.ecdsa.p12", "changeit");
             var key = new ECDsaSecurityKey(cert.GetECDsaPrivateKey())
             {
-                KeyId = CryptoRandom.CreateUniqueId(16)
+                KeyId = CryptoRandom.CreateUniqueId(16, CryptoRandom.OutputFormat.Hex)
             };
 
             return builder.AddSigningCredential(
